@@ -1,0 +1,144 @@
+﻿<views:MvxWindow
+    xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+    xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Binding;assembly=MvvmCross.Platforms.Wpf"
+    xmlns:core="clr-namespace:Rmsa;assembly=Rmsa.Core"
+    x:Class="Rmsa.View.DataSourceSettingsView"
+    x:TypeArguments="vm:DataSourceSettingsViewModel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ext="clr-namespace:Rmsa.Extensions"
+    xmlns:converter="clr-namespace:Rmsa.Converter"
+    xmlns:vm="clr-namespace:Rmsa.ViewModel;assembly=Rmsa.Core"
+    Title="Data Source Settings" 
+    SizeToContent="WidthAndHeight"
+    MinWidth="350" MaxWidth="450"
+    ResizeMode="NoResize" 
+    WindowStartupLocation="CenterOwner" 
+    Icon="/Images/options.png"
+    Loaded="MvxWindow_Loaded"
+    >
+    <Window.Resources>
+        <converter:EnumMatchToBooleanConverter x:Key="enumConverter" />
+        <converter:BooleanToVisibilityConverter x:Key="visibilityConverter" />
+    </Window.Resources>
+    
+    <StackPanel Margin="10">
+        
+        <!--general settings-->
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="Data Source:"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding DataSourceType}"
+                      ItemsSource="{Binding Source={ext:EnumBindingSource {x:Type core:DataSourceType}}}"/>
+
+            <Label Grid.Row="1" Grid.Column="0" Content="Data Format:" Visibility="{Binding IsDataFormatVisible, Converter={StaticResource visibilityConverter}}"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" SelectedItem="{Binding DataFormat}"
+                      Visibility="{Binding IsDataFormatVisible, Converter={StaticResource visibilityConverter}}" 
+                      ItemsSource="{Binding Source={ext:EnumBindingSource {x:Type core:DataFormat}}}"/>
+
+            <Label Grid.Row="2" Grid.Column="0" Content="Data Mode:"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" SelectedItem="{Binding DataMode}" 
+                      ItemsSource="{Binding Source={ext:EnumBindingSource {x:Type core:DataMode}}}"/>
+
+            <Label Grid.Row="3" Grid.Column="0" Content="Frame Width:"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" IsEditable="true" 
+                                  Text="{Binding FrameWidth}">
+                <ComboBoxItem>64</ComboBoxItem>
+                <ComboBoxItem>128</ComboBoxItem>
+                <ComboBoxItem>256</ComboBoxItem>
+                <ComboBoxItem>512</ComboBoxItem>
+                <ComboBoxItem>1024</ComboBoxItem>
+                <ComboBoxItem>2048</ComboBoxItem>
+                <ComboBoxItem>4096</ComboBoxItem>
+            </ComboBox>
+
+            <Label Grid.Row="4" Grid.Column="0" Content="Sampling Rate, Hz:"/>
+            <ComboBox Grid.Row="4" Grid.Column="1" IsEditable="true" 
+                                  Text="{Binding SamplingRateHz}">
+                <ComboBoxItem>1024</ComboBoxItem>
+                <ComboBoxItem>1048576</ComboBoxItem>
+            </ComboBox>
+        </Grid>
+        
+        <!--generator parameters-->
+        <Grid Margin="10" Visibility="{Binding IsGeneratorParametersVisible, Converter={StaticResource visibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="Input Frequency, Hz:"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InputFrequencyHz}"  />
+
+            <Label Grid.Row="1" Grid.Column="0" Content="Amplitude, Vrms:"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding AmplitudeVrms}"  />
+
+            <Label Grid.Row="2" Grid.Column="0" Content="DC Offset, V:"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DcOffsetV}"  />
+
+        </Grid>
+
+        <!--COM port parameters-->
+        <Grid Margin="10" Visibility="{Binding IsComPortParametersVisible, Converter={StaticResource visibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="Port Name:"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ComPortName}"  />
+
+            <Label Grid.Row="1" Grid.Column="0" Content="Baud Rate:"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ComPortBaudRate}"  />
+        </Grid>
+
+        <!--file parameters-->
+        <Grid Margin="10" Visibility="{Binding IsFileParametersVisible, Converter={StaticResource visibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="File Name:" />
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Text="{Binding FileName}" />
+                <Button Grid.Column="2" Content="..." Width="30" Height="Auto" Command="{Binding OnSelectFileCommand}" />
+            </Grid>
+        </Grid>
+
+        <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding ErrorMessage}" />
+
+        <StackPanel Orientation="Horizontal" Margin="0, 20, 0 ,0" HorizontalAlignment="Right">
+            <Button Content="OK" IsDefault="True" x:Name="buttonOk" Command="{Binding OnOkCommand}" />
+            <Button Content="Cancel" IsCancel="True" Margin="8,0,0,0" />
+        </StackPanel>
+    </StackPanel>
+</views:MvxWindow>

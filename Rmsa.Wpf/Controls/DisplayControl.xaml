@@ -1,0 +1,49 @@
+﻿<UserControl 
+    x:Class="Rmsa.Controls.DisplayControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
+    xmlns:converter="clr-namespace:Rmsa.Converter"
+    Loaded="UserControl_Loaded"
+    >
+    <UserControl.Resources>
+        <converter:EnumMatchToBooleanConverter x:Key="enumConverter" />
+        <converter:BooleanToVisibilityConverter x:Key="visibilityConverter" />
+        <converter:EmptyStringToVisibilityConverter x:Key="strVisibilityConverter" />
+        <converter:MoreThanOneToVisibilityConverter x:Key="moreThanOneVisibilityConverter" />
+        <converter:ChannelsConverter x:Key="channelsConverter" />
+    </UserControl.Resources>
+    
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <skia:SKElement Grid.Row="0" x:Name="inputCanvas" 
+                        PaintSurface="InputCanvas_PaintSurface" 
+                        MouseWheel="InputCanvas_MouseWheel" 
+                        MouseDown="InputCanvas_MouseDown"
+                        MouseUp="InputCanvas_MouseUp"
+                        MouseMove="InputCanvas_MouseMove" />
+
+
+        <skia:SKElement Grid.Row="1" x:Name="resultCanvas"
+                           PaintSurface="ResultCanvas_PaintSurface" />
+
+        <StackPanel VerticalAlignment="Bottom" Visibility="{Binding IsHasError, Converter={StaticResource visibilityConverter}}">
+            <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" Foreground="Red" Background="Black"
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource strVisibilityConverter}}"/>
+            <TextBlock Text="{Binding Display.ErrorMessage}" TextWrapping="Wrap" Foreground="Red" Background="Black" 
+                       Visibility="{Binding Display.ErrorMessage, Converter={StaticResource strVisibilityConverter}}"/>
+            <ItemsControl ItemsSource="{Binding Display.ChannelErrors}" VerticalAlignment="Bottom">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap" Foreground="Yellow" Background="Black" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

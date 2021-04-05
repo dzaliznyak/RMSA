@@ -1,0 +1,68 @@
+﻿<views:MvxWpfView
+    xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+    xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Binding;assembly=MvvmCross.Platforms.Wpf" 
+    x:Class="Rmsa.Wpf.Views.DisplayView"
+    xmlns:userCtrl="clr-namespace:Rmsa.Controls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:converter="clr-namespace:Rmsa.Converter"
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <converter:EnumMatchToBooleanConverter x:Key="enumConverter" />
+        <converter:BooleanToVisibilityConverter x:Key="visibilityConverter" />
+        <converter:EmptyStringToVisibilityConverter x:Key="strVisibilityConverter" />
+        <converter:MoreThanOneToVisibilityConverter x:Key="moreThanOneVisibilityConverter" />
+        <converter:ChannelsConverter x:Key="channelsConverter" />
+    </UserControl.Resources>
+    
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ToolBarTray x:Name="toolbar" Grid.Row="0" Background="#FF4E5053">
+            <ToolBar Name="myMainToolbar" Background="Gray">
+                <Button ToolTip="Data Source Settings" Command="{Binding OpenDataSourceSettingsCommand}">
+                    <Image Source="/Images/port2.png" Width="16" Height="16" SnapsToDevicePixels="True"/>
+                </Button>
+
+                <Separator></Separator>
+
+                <CheckBox Margin="0,2,5,0" Foreground="White" IsChecked="{Binding Settings.IsAutoZoom}">Auto Zoom</CheckBox>
+
+                <!--channel visibility checkboxes-->
+                <ItemsControl ItemsSource="{Binding Display.Channels}" 
+                          Visibility="{Binding Display.Channels, Converter={StaticResource moreThanOneVisibilityConverter}}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Margin="0,2,5,0" Foreground="{Binding BaseColor}" VerticalAlignment="Center" 
+                                  IsChecked="{Binding Settings.IsVisible}" 
+                                  Content="{Binding Name}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <ComboBox SelectedItem="{Binding Settings.ActiveChannel}" Width="50" Height="20" VerticalAlignment="Center"  
+                      ItemsSource="{Binding Display.Channels, Converter={StaticResource channelsConverter}}"
+                      Visibility="{Binding Display.Channels, Converter={StaticResource moreThanOneVisibilityConverter}}"/>
+
+                <Button ToolTip="Data Processing Settings" Command="{Binding OpenSettingsCommand}" >
+                    <Image Source="/Images/settings.png" Width="16" Height="16" SnapsToDevicePixels="True"/>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+
+        <userCtrl:DisplayControl Grid.Row="1" x:Name="DisplayControl" />
+
+    </Grid>
+</views:MvxWpfView>

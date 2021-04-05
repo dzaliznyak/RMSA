@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\math2.png" />
+    <None Remove="Images\options.png" />
+    <None Remove="Images\port.png" />
+    <None Remove="Images\port2.png" />
+    <None Remove="Images\settings.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MvvmCross.Platforms.Wpf" Version="7.1.2" />
+    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="7.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rmsa.Core\Rmsa.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\math2.png" />
+    <Resource Include="Images\options.png" />
+    <Resource Include="Images\port.png" />
+    <Resource Include="Images\port2.png" />
+    <Resource Include="Images\settings.png" />
+  </ItemGroup>
+
+</Project>
