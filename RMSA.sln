@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rmsa.Core", "Rmsa.Core\Rmsa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{D23BB5D2-11C1-45EB-BA2C-9E6245DA09A8}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
+		Docs\README.md = Docs\README.md
 	EndProjectSection
 EndProject
 Global
