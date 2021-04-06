@@ -53,7 +53,7 @@
                       ItemsSource="{Binding Source={ext:EnumBindingSource {x:Type core:DataMode}}}"/>
 
             <Label Grid.Row="3" Grid.Column="0" Content="Frame Width:"/>
-            <ComboBox Grid.Row="3" Grid.Column="1" IsEditable="true" 
+            <ComboBox Grid.Row="3" Grid.Column="1" IsEditable="true" IsEnabled="{Binding IsFrameWidthChangable}"
                                   Text="{Binding FrameWidth}">
                 <ComboBoxItem>64</ComboBoxItem>
                 <ComboBoxItem>128</ComboBoxItem>

@@ -1,6 +1,7 @@
 ﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using Rmsa.Core.DataSource.DataParser;
 using Rmsa.Core.Utils;
 using Rmsa.Model;
 using Rmsa.Services;
@@ -36,6 +37,13 @@ namespace Rmsa.ViewModel
         public bool IsGeneratorParametersVisible => DataSourceType == DataSourceType.Generator;
         public bool IsDataFormatVisible => DataSourceType == DataSourceType.File || DataSourceType == DataSourceType.ComPort;
 
+        bool _isFrameWidthChangable;
+        public bool IsFrameWidthChangable
+        {
+            get => _isFrameWidthChangable;
+            set => SetProperty(ref _isFrameWidthChangable, value);
+        }
+
         #region General parameters
         DataSourceType _dataSourceType;
         public DataSourceType DataSourceType 
@@ -62,7 +70,14 @@ namespace Rmsa.ViewModel
         public DataFormat DataFormat
         {
             get => _dataFormat;
-            set => SetProperty(ref _dataFormat, value);
+            set
+            {
+                SetProperty(ref _dataFormat, value);
+                var helper = new DataParserHelper(_dataFormat);
+                IsFrameWidthChangable = !helper.IsFixedFrameWidth;
+                if (!IsFrameWidthChangable)
+                    FrameWidth = helper.FrameWidth;
+            }
         }
 
         int _frameWidth;
@@ -130,6 +145,12 @@ namespace Rmsa.ViewModel
             InputFrequencyHz = settings.InputFrequencyHz;
             AmplitudeVrms = settings.AmplitudeVrms;
             DcOffsetV = settings.DcOffsetV;
+
+            // fixing some fields depending on the data format
+            var helper = new DataParserHelper(_dataFormat);
+            IsFrameWidthChangable = !helper.IsFixedFrameWidth;
+            if (!IsFrameWidthChangable)
+                FrameWidth = helper.FrameWidth;
         }
 
         void OnSelectFile()
