@@ -12,8 +12,8 @@ The program can visualize up to 8 channels simultaneously. Each channel has its 
 
 ## Scaling
 Scaling is performed only along the Y-axis by scrolling the mouse wheel. Each channel scales independently of the others. To scale a channel, you first need to make it active.
-The Auto Zoom button turns on the automatic scaling mode - each channel is individually scaled so that the maximum signal value is at the upper border of the graph.
-If scaling along the X-axis is required, other approaches can be used - change the Frame Width or apply the NOP algorithm. In the second case in the result window, you can observe the fragment of the input signal stretched along the X-axis.
+The `Auto Zoom` button turns on the automatic scaling mode - each channel is individually scaled so that the maximum signal value is at the upper border of the graph.
+If scaling along the X-axis is required, other approaches can be used - change the `Frame Width` or apply the `NOP` algorithm. In the second case in the result window, you can observe the fragment of the input signal stretched along the X-axis.
 
 ## Data Source Settings
 
@@ -26,11 +26,11 @@ If scaling along the X-axis is required, other approaches can be used - change t
 
 **All data mode**: This mode allows you to see the entire contents of the file at once. This mode is not applicable to `COM Port` or `Signal Generator` data sources. 
 
-**Stream data mode**: This mode displays new data as soon as it arrives, shifting the previous data to the left. Data rate depends on Frame Width and Sampling Rate:
+**Stream data mode**: This mode displays new data as soon as it arrives, shifting the previous data to the left. Data rate depends on `Frame Width` and `Sampling Rate`:
 
 ![Stream Data Mode](/Docs/stream_mode.gif?raw=true "Stream Mode")
 
-**Frame data mode**: This mode displays data frame by frame. Frame rate depends on Frame Width and Sampling Rate:
+**Frame data mode**: This mode displays data frame by frame. Frame rate depends on `Frame Width` and `Sampling Rate`:
 
 ![Frame Data Mode](/Docs/frame_mode.gif?raw=true "Frame Mode")
 
@@ -39,15 +39,15 @@ If scaling along the X-axis is required, other approaches can be used - change t
 **Sampling Rate**: the number of points (samples) of the input signal received per second. You should set it to match your ADC sampling rate.
 
 ## Data Processing Settings
-**Algorithm**: can be FFT (Fast Fourier Transform), DFT (Digital Fourier Transform), or NOP (No Operation). There are many good articles on the topic of Fourier transforms, and I will not cover this topic here. Use the source code as a starting point for your own experiments, add new algorithms. The NOP operation can also be used to scale the input signal. DSPLib from Steve Hageman was used as an FFT implementation (https://www.codeproject.com/Articles/1107480/DSPLib-FFT-DFT-Fourier-Transform-Library-for-NET-6).
+**Algorithm**: can be FFT (Fast Fourier Transform), DFT (Digital Fourier Transform), or NOP (No Operation). There are many good articles on the topic of Fourier transforms, and I will not cover this topic here. Use the source code as a starting point for your own experiments, add new algorithms. The `NOP` algorithm can also be used to scale the input signal. DSPLib from Steve Hageman was used as an FFT implementation (https://www.codeproject.com/Articles/1107480/DSPLib-FFT-DFT-Fourier-Transform-Library-for-NET-6).
 
-**Window**: transformations are not applied to all data at once, but only to those in the window. This window is displayed on the screen as two vertical lines of the same color as the channel color. But besides the fact that the window separates the data we need from the entire stream, it can also transform it. In most cases, applying the window function brings the signal at the edges of the window to zero or nearly zero. Here's an example of applying the Hamming window to a sine wave:
+**Window**: transformations are not applied to all data at once, but only to those in the window. This window is displayed on the screen as two vertical lines of the same color as the channel color. But besides the fact that the window separates the data we need from the entire stream, it can also transform it. In most cases, applying the window function brings the signal at the edges of the window to zero or nearly zero. Here's an example of applying the `Hamming` window to a sine wave:
 
 ![Hamming Window](/Docs/hamming_window.png?raw=true "Hamming Window")
 
 **Window Width**: the width of the window in points (samples). This value must be a power of 2 for the FFT algorithm to work correctly.
 
-**Zero Padding**: padding the window data with zeros on the right. If the FFT algorithm is used, then Window Width + Zero Padding in total must be a power of 2, otherwise the program will generate an error.
+**Zero Padding**: padding the window data with zeros on the right. If the FFT algorithm is used, then `Window Width` + `Zero Padding` in total must be a power of 2, otherwise the program will generate an error.
 
-*Result Type**: while the input signal is represented as an array of `doubles`, after conversion we get an array of the same length, but complex numbers. The `Result Type` determines which part of the complex number should be displayed on the graph. For example, in Fourie analysis, we choose `Magnitude` to display the frequency component of the signal, and `Phase` for the phase component. You can also choose the pure real or imaginary part of a complex number.
+**Result Type**: while the input signal is represented as an array of `doubles`, after conversion we get an array of the same length, but complex numbers. The `Result Type` determines which part of the complex number should be displayed on the graph. For example, in Fourie analysis, we choose `Magnitude` to display the frequency component of the signal, and `Phase` for the phase component. You can also choose the pure real or imaginary part of a complex number.
 
