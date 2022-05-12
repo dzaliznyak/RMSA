@@ -1,7 +1,7 @@
 # Realtime Math Signal Analizer (RMSA)
 
 This application is designed for experiments in signal processing, analysis, and visualization. It cannot be considered as a standalone tool yet, but rather as a starting point where you can add your own data format or processing algorithm.
-The application is developed on the .Net Core 3.1 platform, WPF and SkiaSharp are used as a graphics library.
+The application is developed on the .Net 6.0 platform, WPF and SkiaSharp are used as a graphics library.
 
 ## Main Window
 ![Application Main Window](/Docs/app.png?raw=true "Main Window")
