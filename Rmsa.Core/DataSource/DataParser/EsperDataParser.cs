@@ -14,14 +14,14 @@ namespace Rmsa.Core.DataSource.DataParser
             _settings = settings;
         }
 
-        public bool ParseBuffer(List<List<double>> data, byte[] buf)
+        public bool ParseBuffer(List<List<double>> data, byte[] inBuf)
         {
             throw new NotSupportedException();
         }
 
-        public bool ParseRecord(List<List<double>> data, string item)
+        public bool ParseRecord(List<List<double>> data, string record)
         {
-            var values = item.Split(' ', '\t');
+            var values = record.Split(' ', '\t');
 
             if (values.Length != data.Count)
             {
@@ -40,9 +40,9 @@ namespace Rmsa.Core.DataSource.DataParser
             return true;
         }
 
-        public bool ParseRecord(List<CircularBuffer> data, string item)
+        public bool ParseRecord(List<CircularBuffer> data, string record)
         {
-            var values = item.Split(' ', '\t');
+            var values = record.Split(' ', '\t');
 
             if (values.Length != data.Count)
             {

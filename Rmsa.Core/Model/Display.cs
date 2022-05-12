@@ -14,8 +14,8 @@ namespace Rmsa.Model
 {
     public class Display : MvxViewModel
     {
-        readonly ConcurrentDictionary<DataChannelNo, Channel> _channels = new ConcurrentDictionary<DataChannelNo, Channel>();
-        readonly FpsCounter _fps = new FpsCounter();
+        readonly ConcurrentDictionary<DataChannelNo, Channel> _channels = new();
+        readonly FpsCounter _fps = new();
 
         IDataSource _dataSource;
         string _errorMessage;
@@ -46,7 +46,7 @@ namespace Rmsa.Model
         {
             get
             {
-                return !string.IsNullOrEmpty(ErrorMessage) || ChannelErrors.Count() > 0;
+                return !string.IsNullOrEmpty(ErrorMessage) || ChannelErrors.Any();
             }
         }
 
@@ -63,7 +63,7 @@ namespace Rmsa.Model
         }
 
         #region Settings 
-        ChannelSettings LoadChannelSettings(DataChannelNo channelNo)
+        static ChannelSettings LoadChannelSettings(DataChannelNo channelNo)
         {
             string fileName = string.Format(Defines.ChannelSettingsFileName, channelNo);
             ChannelSettings settings;
@@ -113,7 +113,7 @@ namespace Rmsa.Model
                 _fps.Update();
                 //System.Diagnostics.Trace.WriteLine($"FPS: {FPS}");
 
-                for (int i = 0; i < e.Data.Count(); i++)
+                for (int i = 0; i < e.Data.Count; i++)
                 {
                     DataChannelNo channelNo = (DataChannelNo)i + 1;
                     Channel channel = GetChannel(channelNo);
@@ -138,7 +138,7 @@ namespace Rmsa.Model
 
         void CreateChannels()
         {
-            if (_channels.Count == 0)
+            if (_channels.IsEmpty)
             {
                 // create at least one channel
                 GetChannel(DataChannelNo.CH1);

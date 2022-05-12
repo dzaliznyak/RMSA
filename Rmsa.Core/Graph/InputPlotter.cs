@@ -20,9 +20,13 @@ namespace Rmsa.Core.Graph
             public bool IsActive { get; internal set; }
         }
 
-        public static void Draw(bool isActive, ChannelDrawStyle channelDrawStyle, InputData data, SKPaintSurfaceEventArgs paintSurface, 
-                           DisplayRuntimeState state, ChannelSettings channelSettings, 
-                           Margin margin)
+        public static void Draw(bool isActive,
+            ChannelDrawStyle channelDrawStyle,
+            InputData data,
+            SKPaintSurfaceEventArgs paintSurface,
+            DisplayRuntimeState state,
+            ChannelSettings channelSettings,
+            Margin margin)
         {
             if (data == null || data.Data == null || data.Data.Count == 0)
                 return;
@@ -34,11 +38,11 @@ namespace Rmsa.Core.Graph
             double width = paintSurface.Info.Width - (int)margin.Width;
             double height = paintSurface.Info.Height - (int)margin.Height;
 
-            if (data != null && channelSettings.IsVisible)
+            if (channelSettings.IsVisible)
             {
                 var maxY = state.IsAutoZoom ? data.MaxAbsY : channelSettings.InputGraphSettings.ZoomY;
 
-                DrawInfo di = new DrawInfo
+                DrawInfo di = new()
                 {
                     Style = channelDrawStyle,
                     IsActive = isActive,
@@ -50,6 +54,9 @@ namespace Rmsa.Core.Graph
                     WindowPosition = channelSettings.InputGraphSettings.WindowPosition,
                     WindowWidth = channelSettings.InputGraphSettings.WindowWidth
                 };
+
+                // scale and drag the screen
+                canvas.SetMatrix(state.Matrix);
 
                 DrawAxis(data, di);
 
@@ -112,7 +119,7 @@ namespace Rmsa.Core.Graph
             if (di.IsActive)
             {
                 double xPos = di.Width;
-                double yPos = -di.Height/2;
+                double yPos = -di.Height / 2;
                 di.Canvas.DrawText($"FPS: {data.Fps:N0}", X(xPos, di), Y(yPos, di), di.Style.RulerYTextDrawStyle);
             }
         }
@@ -144,7 +151,7 @@ namespace Rmsa.Core.Graph
 
         static float Y(double y, DrawInfo di)
         {
-            return (float)(di.Height / 2 - y)  + (float)di.Margin.Top;
+            return (float)(di.Height / 2 - y) + (float)di.Margin.Top;
         }
 
     }

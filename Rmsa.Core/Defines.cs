@@ -12,7 +12,7 @@ namespace Rmsa
         public const string DataSourceConfigFileName = "config\\DataSource.config";
         public const string SettingsFileName = "config\\main.config";
         public const string ChannelSettingsFileName = "config\\{0}.config";
-        public static SKColor DisplayBackgroundColor = new SKColor(0, 12, 0);
+        public static readonly SKColor DisplayBackgroundColor = new(0, 12, 0);
         public static int DesiredFps = 60;
     }
 

@@ -1,5 +1,6 @@
 ﻿using Rmsa.Core.Graph;
 using Rmsa.ViewModel;
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using SkiaSharp.Views.WPF;
 using System;
@@ -13,6 +14,7 @@ namespace Rmsa.Controls
     public partial class DisplayControl : UserControl
     {
         Point? _dragStart;
+        SKMatrix _startMatrix;
         double _windowStartPosition;
 
         DisplayViewModel ViewModel;
@@ -47,7 +49,7 @@ namespace Rmsa.Controls
                 resultCanvas.InvalidateVisual();
             });
         }
-        
+
         void InputCanvas_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
             if (ViewModel == null)
@@ -58,11 +60,11 @@ namespace Rmsa.Controls
             foreach (var channel in ViewModel.Display.Channels)
                 InputPlotter.Draw(
                     isActive: ViewModel.Settings.ActiveChannel == channel.ChannelNo,
-                    ChannelDrawStyle.FromChannelNo(channel.ChannelNo), 
-                    channel.Data, 
-                    paintSurface: e, 
-                    ViewModel.Settings, 
-                    channel.Settings, 
+                    ChannelDrawStyle.FromChannelNo(channel.ChannelNo),
+                    channel.Data,
+                    paintSurface: e,
+                    ViewModel.Settings,
+                    channel.Settings,
                     ViewModel.Settings.InputGraphMargin);
         }
 
@@ -76,21 +78,31 @@ namespace Rmsa.Controls
             foreach (var channel in ViewModel.Display.Channels)
                 ResultPlotter.Draw(
                     isActive: ViewModel.Settings.ActiveChannel == channel.ChannelNo,
-                    ChannelDrawStyle.FromChannelNo(channel.ChannelNo), 
-                    channel.Result, 
-                    paintSurface: e, 
-                    ViewModel.Settings, 
-                    channel.Settings, 
+                    ChannelDrawStyle.FromChannelNo(channel.ChannelNo),
+                    channel.Result,
+                    paintSurface: e,
+                    ViewModel.Settings,
+                    channel.Settings,
                     ViewModel.Settings.ResultGraphMargin);
         }
 
         void InputCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            double zoom = 1 + (double)e.Delta / 1000;
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                double zoom = 1 + (double)e.Delta / 1000;
 
-            var channel = ViewModel.Display.GetChannel(ViewModel.Settings.ActiveChannel);
-            channel.Settings.InputGraphSettings.ZoomY *= zoom;
-
+                var channel = ViewModel.Display.GetChannel(ViewModel.Settings.ActiveChannel);
+                channel.Settings.InputGraphSettings.ZoomY *= zoom;
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.None)
+            {
+                float scaleFactor = (float)(1 + (double)e.Delta / 1000);
+                var pos = Mouse.GetPosition((UIElement)sender);
+               
+                var curMatrix = SKMatrix.CreateScale(scaleFactor, scaleFactor, (float)pos.X, (float)pos.Y);
+                ViewModel.Settings.Matrix = SKMatrix.Concat(curMatrix, ViewModel.Settings.Matrix);
+            }
             ViewModel.Display.RefreshData();
         }
 
@@ -99,6 +111,8 @@ namespace Rmsa.Controls
             var element = (UIElement)sender;
             element.CaptureMouse();
             _dragStart = e.GetPosition(element);
+
+            _startMatrix = ViewModel.Settings.Matrix;
 
             var channel = ViewModel.Display.GetChannel(ViewModel.Settings.ActiveChannel);
             _windowStartPosition = channel.Settings.InputGraphSettings.WindowPosition;
@@ -113,11 +127,24 @@ namespace Rmsa.Controls
 
         void InputCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && _dragStart != null)
-            {
-                var element = (SKElement)sender;
-                var position = e.GetPosition(element);
+            if (_dragStart == null)
+                return;
 
+            var element = (SKElement)sender;
+            var position = e.GetPosition(element);
+
+            if (Keyboard.Modifiers == ModifierKeys.None && e.LeftButton == MouseButtonState.Pressed)
+            {
+                // dragging the entire screen
+                var offsetX = position.X - _dragStart.Value.X;
+                var offsetY = position.Y - _dragStart.Value.Y;
+
+                var curMatrix = SKMatrix.CreateTranslation((float)offsetX, (float)offsetY);
+                ViewModel.Settings.Matrix = SKMatrix.Concat(curMatrix, _startMatrix);
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control || e.RightButton == MouseButtonState.Pressed)
+            {
+                // moving the data window
                 var marginWidth = ViewModel.Settings.InputGraphMargin.Width;
 
                 var pixelOffset = position.X - _dragStart.Value.X;
@@ -131,9 +158,9 @@ namespace Rmsa.Controls
                 else if (newPosition > 1.0)
                     newPosition = 1.0;
                 channel.Settings.InputGraphSettings.WindowPosition = newPosition;
-
-                ViewModel.Display.RefreshData();
             }
+
+            ViewModel.Display.RefreshData();
         }
 
     }

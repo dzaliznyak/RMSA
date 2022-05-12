@@ -1,5 +1,6 @@
 ﻿using MvvmCross.ViewModels;
 using Rmsa.Core.Graph;
+using SkiaSharp;
 using System.Runtime.Serialization;
 
 namespace Rmsa.ViewModel
@@ -21,7 +22,7 @@ namespace Rmsa.ViewModel
         public DataChannelNo ActiveChannel
         {
             get => _activeChannel;
-            set 
+            set
             {
                 _activeChannel = value;
                 RaisePropertyChanged();
@@ -31,5 +32,11 @@ namespace Rmsa.ViewModel
         [DataMember] public Margin InputGraphMargin { get; set; } = new Margin(70, 10, 10, 10);
         [DataMember] public Margin ResultGraphMargin { get; set; } = new Margin(70, 10, 10, 10);
 
+        public SKMatrix Matrix { get; set; } = SKMatrix.CreateIdentity();
+
+        internal void ScaleToFit()
+        {
+            Matrix = SKMatrix.CreateIdentity();
+        }
     }
 }

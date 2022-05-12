@@ -52,12 +52,17 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 
+                <!--active channel-->
                 <ComboBox SelectedItem="{Binding Settings.ActiveChannel}" Width="50" Height="20" VerticalAlignment="Center"  
                       ItemsSource="{Binding Display.Channels, Converter={StaticResource channelsConverter}}"
                       Visibility="{Binding Display.Channels, Converter={StaticResource moreThanOneVisibilityConverter}}"/>
 
                 <Button ToolTip="Data Processing Settings" Command="{Binding OpenSettingsCommand}" >
                     <Image Source="/Images/settings.png" Width="16" Height="16" SnapsToDevicePixels="True"/>
+                </Button>
+
+                <Button ToolTip="Scale to fit" Command="{Binding ScaleToFitCommand}" >
+                    <Image Source="/Images/fit.png" Width="16" Height="16" SnapsToDevicePixels="True"/>
                 </Button>
             </ToolBar>
         </ToolBarTray>

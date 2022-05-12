@@ -56,7 +56,7 @@ namespace Rmsa.Core.Graph
                         maxAbsY = Math.Abs(data.Data[i]);
                 }
 
-                DrawInfo di = new DrawInfo
+                DrawInfo di = new()
                 {
                     Style = channelDrawStyle,
                     IsActive = isActive,
@@ -73,12 +73,12 @@ namespace Rmsa.Core.Graph
                     ZoomY = height / 2 / maxAbsY,
                 };
 
-                DrawAxis(data, di);
+                DrawAxis(di);
                 DrawGraph(data, di);
             }
         }
 
-        static void DrawAxis(ResultData data, DrawInfo di)
+        static void DrawAxis(DrawInfo di)
         {
             // x - axis
             di.Canvas.DrawLine(X(0, di), Y(0, di), X(di.XEnd, di), Y(0, di), di.Style.RulerPaint);

@@ -45,6 +45,7 @@ namespace Rmsa.ViewModel
 
         public ICommand OpenSettingsCommand { get; }
         public ICommand OpenDataSourceSettingsCommand { get; }
+        public ICommand ScaleToFitCommand { get; }
 
         public DisplayViewModel(IMvxNavigationService navigationService, IDataSourceService dataSourceService)
         {
@@ -56,6 +57,7 @@ namespace Rmsa.ViewModel
 
             OpenSettingsCommand = new MvxCommand(() => OpenSettingsDialog());
             OpenDataSourceSettingsCommand = new MvxCommand(() => OpenDataSourceSettingsDialog());
+            ScaleToFitCommand = new MvxCommand(() => ZoomToFit());
 
             _dataSourceService.DataSourceChanged += DataSourceService_DataSourceChanged;
         }
@@ -126,6 +128,11 @@ namespace Rmsa.ViewModel
             {
                 Settings = new DisplayRuntimeState();
             }
+        }
+
+        void ZoomToFit()
+        {
+            Settings.ScaleToFit();
         }
 
         public void SaveSettingsToFile()
