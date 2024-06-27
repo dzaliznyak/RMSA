@@ -1,0 +1,5 @@
+rmdir /S /Q ".vs"
+rmdir /S /Q "Rmsa.Core/bin"
+rmdir /S /Q "Rmsa.Core/obj"
+rmdir /S /Q "Rmsa.Wpf/bin"
+rmdir /S /Q "Rmsa.Wpf/obj"

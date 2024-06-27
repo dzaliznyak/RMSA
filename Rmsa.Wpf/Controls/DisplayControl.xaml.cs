@@ -90,6 +90,7 @@ namespace Rmsa.Controls
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
+                // scaling the data window
                 double zoom = 1 + (double)e.Delta / 1000;
 
                 var channel = ViewModel.Display.GetChannel(ViewModel.Settings.ActiveChannel);
@@ -97,6 +98,7 @@ namespace Rmsa.Controls
             }
             else if (Keyboard.Modifiers == ModifierKeys.None)
             {
+                // scaling the entire screen
                 float scaleFactor = (float)(1 + (double)e.Delta / 1000);
                 var pos = Mouse.GetPosition((UIElement)sender);
                

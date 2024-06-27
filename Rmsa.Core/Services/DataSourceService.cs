@@ -66,6 +66,9 @@ namespace Rmsa.Services
                 case DataFormat.Srul:
                     parser = new SrulDataParser(settings);
                     break;
+                case DataFormat.MagDrone:
+                    parser = new MagDroneDataParser(settings);
+                    break;
                 default:
                     break;
             }
@@ -76,7 +79,7 @@ namespace Rmsa.Services
                     _dataSource = new FileDataSource(settings, parser);
                     break;
                 case DataSourceType.ComPort:
-                    _dataSource = new ComConnection(settings, parser);
+                    _dataSource = new SerialTextDataSource(settings, parser);
                     break;
                 case DataSourceType.Generator:
                     _dataSource = new GeneratorDataSource(settings);

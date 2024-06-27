@@ -4,27 +4,18 @@
     {
         readonly DataFormat _dataFormat;
 
-        public bool IsFixedFrameWidth 
-        {
-            get
-            {
-                return _dataFormat == DataFormat.Srul;
-            }
-        }
+        public bool IsFixedFrameWidth => _dataFormat == DataFormat.Srul;
 
         public int FrameWidth
         {
             get
             {
-                switch (_dataFormat)
+                return _dataFormat switch
                 {
-                    case DataFormat.Esper:
-                        return 1024;
-                    case DataFormat.Srul:
-                        return 512;
-                    default:
-                        return 1024;
-                }
+                    DataFormat.Esper => 1024,
+                    DataFormat.Srul => 512,
+                    _ => 1024,
+                };
             }
         }
 

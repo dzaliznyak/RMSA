@@ -13,7 +13,7 @@ namespace Rmsa
         public const string SettingsFileName = "config\\main.config";
         public const string ChannelSettingsFileName = "config\\{0}.config";
         public static readonly SKColor DisplayBackgroundColor = new(0, 12, 0);
-        public static int DesiredFps = 60;
+        public static readonly int DesiredFps = 60;
     }
 
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
@@ -81,7 +81,10 @@ namespace Rmsa
         Esper,
 
         [Description("Binary 24bit, 2-Channel, CR-LF Separated")]
-        Srul
+        Srul,
+
+        [Description("MagDrone")]
+        MagDrone
     }
 
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
